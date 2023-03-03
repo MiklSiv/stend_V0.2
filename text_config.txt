@@ -1,0 +1,11 @@
+COM1 1 (заменить цифру на номер сом порта)
+            MEAT 1
+            TPortable 1
+            MOOS 1
+            NRight 1 
+            NLeft 1
+            PRight 1
+            PLeft 1 
+            KWR102 1 
+            BASE 1
+            DS1820 1

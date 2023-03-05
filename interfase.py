@@ -88,8 +88,8 @@ class Ui_MainWindow(object):
 
     def server_power(self, vvod = 'on'):
         if vvod != "off":
-            connections.server_on()
-            connections.read_abonentov()
+            serv = threading.Thread(target=connections.server_on)
+            serv.start()
             self.bt_on_server.setText("RUNNING")
             self.bt_off_server.setText("OFF")
 
@@ -193,6 +193,7 @@ class Ui_MainWindow(object):
                         self.bt_off_com.setText("OFF")
                         connections.COM_FlAG[self.name_comport][0] = 'open'
                         connections.COM_FlAG[self.name_comport][1] =  self.ser
+                        connections.read_abonentov(self.name_comport)
                     self.com_on = True
                 except:
                     pass

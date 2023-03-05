@@ -58,16 +58,18 @@ def loop_read(name):
                             if ask[0] != '#':
                                 break
                         COM_FlAG[name][3][i] = ask
-                        print(ask)
+                        #print(ask)
                     except:
                         print('<loop_read - COM error>')
 
             COM_FlAG[name][2] = 'open'
+            print ("open com")
             time.sleep(2)
             COM_FlAG[name][2] = 'close'
+            print("close com")
 
-def read_abonentov():
-    ab1 = threading.Thread(target=loop_read, args= ('COM1',))
+def read_abonentov(com):
+    ab1 = threading.Thread(target=loop_read, args= (com,))
     ab1.start()
 
 
@@ -76,6 +78,7 @@ def read_abonentov():
 
 def client_to_com(client): #разовое обращение к портам
     try:
+        print ('clien give')
         data = client.recv(1024).decode('utf-8').split()  # спиок входных данных типа [x, y]: x - имя сом порта, у - команда для компорта
         if len(data) != 2:
             client.send('<ASK_error - bad struct message>'.encode('utf-8'))
@@ -182,12 +185,15 @@ server = ''
 
 def server_on(): # включение сервера
     global server, SERVER_FLAG
+    SERVER_FLAG = True
     Spisok_client = [False] * 1000
     SERVER_ADDRESS = ('localhost', 5000)
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(SERVER_ADDRESS)
     server.listen(10)
+    print(server)
     while SERVER_FLAG:  # сканер появления клиентов. отправка сообщения в сом порт и обратно
+        print ('server poisk')
         try:
             client, address = server.accept()
             for i in Spisok_client:
@@ -196,8 +202,9 @@ def server_on(): # включение сервера
                     i.start()
                     break
         except:
+            print('exept poisk')
             pass
-    SERVER_FLAG = True
+    SERVER_FLAG = False
 
 def server_off(): #отключение сервера
     global SERVER_FLAG
